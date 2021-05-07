@@ -1,0 +1,23 @@
+.listview-datail {
+  display: flex;
+  padding: 5px;
+  padding-left: 10vw;
+  padding-right: 8.5vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  margin-bottom: 1px;
+  justify-content: space-between;
+  background-color: white;
+  align-items: center;
+  align-content: center;
+}
+
+.listview-image {
+  width: 30px;
+  height: 30px;
+}
+
+.edit-icon,
+.view-icon {
+  cursor: pointer;
+}

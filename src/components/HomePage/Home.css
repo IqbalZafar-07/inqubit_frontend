@@ -1,0 +1,27 @@
+.home {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+.home-nav {
+  padding: 30px;
+  margin: 20px;
+  background-color: white;
+  box-shadow: 1px 1px 5px 1px #888888;
+  cursor: pointer;
+  color: black;
+}
+
+.home-nav-icon {
+  height: 100px;
+  width: 100px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid lightgray;
+}
+
+.home-nav:hover {
+  box-shadow: 1px 1px 10px 2px #888888;
+}

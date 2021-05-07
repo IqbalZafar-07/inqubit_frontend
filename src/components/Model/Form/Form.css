@@ -1,0 +1,26 @@
+.form {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(189, 188, 188);
+}
+
+.form-input {
+  width: 250px;
+  height: 35px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.form-submit-button {
+  background-color: black;
+  color: rgb(189, 188, 188);
+  height: 40px;
+  width: 260px;
+  border: 3px solid white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -1,0 +1,90 @@
+.movement-list-datail {
+  display: flex;
+  padding: 5px;
+  padding-left: 10vw;
+  padding-right: 8.5vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  margin-bottom: 1px;
+  justify-content: space-between;
+  background-color: white;
+  align-items: center;
+  align-content: center;
+}
+
+.movement-body-header {
+  display: flex;
+  background-color: white;
+  justify-content: space-between;
+  padding: 10px;
+  padding-left: 9vw;
+  padding-right: 9vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  margin-bottom: 1px;
+  border-bottom: 1px solid grey;
+}
+
+.movement-add {
+  font-size: 17px;
+  background-color: white;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  position: absolute;
+  top: 14vh;
+  right: 10vw;
+  cursor: pointer;
+  border: 2px solid grey;
+}
+
+.edit-icon,
+.view-icon {
+  cursor: pointer;
+}
+
+.edit-form-modal {
+  height: 450px;
+  width: 500px;
+  position: absolute;
+  top: 20vh;
+  left: 35vw;
+  right: 35vw;
+  bottom: 10vh;
+  background-color: black;
+}
+
+.edit-form-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.form-modal-close {
+  margin-right: 15px;
+  font-size: 30px;
+  color: grey;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+
+.edit-form-modal-heading {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: rgb(189, 188, 188);
+  font-weight: 700;
+  font-size: 25px;
+}
+
+.option {
+  height: 40px;
+  width: 255px;
+  margin-bottom: 10px;
+}
