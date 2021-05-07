@@ -51,6 +51,11 @@ function ProductMovement() {
           alert(err);
         });
     } else {
+      console.log({
+        from_location_id: from_location_id,
+        to_location_id: to_location_id,
+        movement_id: movement_id,
+      });
       axios
         .post(`https://inqubitbackend.herokuapp.com/api/productmovements/`, {
           from_location_id: from_location_id,
@@ -105,6 +110,7 @@ function ProductMovement() {
             value={to_location_id}
             onChange={(e) => {
               setToLocationId(e.target.value);
+              console.log(e.target.value);
             }}
             className="option"
             required
