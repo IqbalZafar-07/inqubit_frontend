@@ -1,25 +1,36 @@
 import React, { useEffect, useState } from "react";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Modal from "react-modal";
-import EditIcon from "@material-ui/icons/Edit";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import "./ProductMovement.css";
 import axios from "axios";
 
+let currentEle = "";
+
 function ProductMovement() {
   const [to_location_id, setToLocationId] = useState("");
   const [from_location_id, setFromLocationId] = useState("");
-  const [movement_id, setMovementId] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentEle, setCurrentEle] = useState("");
   const [viewMovement, setViewMovement] = useState(false);
   const [location, setLocation] = useState("");
   const [productMovement, setProductMovement] = useState("");
+  const [product, setProduct] = useState("");
+  const [product_id, setProductId] = useState("");
+  const [quantity, setQuantity] = useState(1);
+
+  // ************useEffects to fetch initial datas****************
 
   useEffect(() => {
     axios
       .get("https://inqubitbackend.herokuapp.com/api/locations")
       .then((res) => setLocation(res.data));
+
+    axios
+      .get("https://inqubitbackend.herokuapp.com/api/products")
+      .then((res) => {
+        setProduct(res.data);
+      });
   }, []);
   useEffect(() => {
     axios
@@ -27,53 +38,60 @@ function ProductMovement() {
       .then((res) => setProductMovement(res.data));
   }, [isModalOpen]);
 
+  // ***********function to handle form submition **************
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (currentEle._id) {
-      axios
-        .put(
-          `https://inqubitbackend.herokuapp.com/api/productmovements/${currentEle._id}`,
-          {
-            from_location_id: from_location_id,
-            to_location_id: to_location_id,
-            movement_id: movement_id,
-          }
-        )
-        .then(() => {
-          setIsModalOpen(false);
-          setToLocationId("");
-          setFromLocationId("");
-          setMovementId("");
-          setCurrentEle("");
-        })
-        .catch((err) => {
-          console.log(err, "put");
-          alert(err);
-        });
-    } else {
-      console.log({
+
+    console.log({
+      from_location_id: from_location_id,
+      to_location_id: to_location_id,
+      product_id: product_id,
+      quantity: quantity,
+    });
+
+    console.log({
+      from_location_id: from_location_id,
+      to_location_id: to_location_id,
+      product_id: product_id,
+      quantity: quantity,
+    });
+    axios
+      .post(`https://inqubitbackend.herokuapp.com/api/productmovements/`, {
         from_location_id: from_location_id,
         to_location_id: to_location_id,
-        movement_id: movement_id,
+        product_id: product_id,
+        quantity: quantity,
+      })
+      .then(() => {
+        setIsModalOpen(false);
+        setToLocationId("");
+        setFromLocationId("");
+        setProductId("");
+        setQuantity(1);
+        currentEle = "";
+      })
+      .catch((err) => {
+        alert(err);
+        console.log(err, "post");
       });
-      axios
-        .post(`https://inqubitbackend.herokuapp.com/api/productmovements/`, {
-          from_location_id: from_location_id,
-          to_location_id: to_location_id,
-          movement_id: movement_id,
-        })
-        .then(() => {
-          setIsModalOpen(false);
-          setToLocationId("");
-          setFromLocationId("");
-          setMovementId("");
-          setCurrentEle("");
-        })
-        .catch((err) => {
-          alert(err);
-          console.log(err, "post");
-        });
-    }
+  };
+
+  // ********************function to delete element*******************
+
+  const deleteElement = () => {
+    console.log(currentEle);
+    axios
+      .delete(
+        `https://inqubitbackend.herokuapp.com/api/productmovements/${currentEle._id}`
+      )
+      .then(() => {
+        currentEle = "";
+      })
+      .catch((err) => {
+        console.log(err, "delete");
+        alert(err);
+      });
   };
 
   // ***********Function which returns a form*************
@@ -124,15 +142,36 @@ function ProductMovement() {
           </select>
           <br />
           <label>
-            <b>Movement Id*</b>
+            <b>Product ID*</b>
+          </label>
+          <br />
+          <select
+            value={product_id}
+            onChange={(e) => {
+              setProductId(e.target.value);
+              console.log(e.target.value);
+            }}
+            className="option"
+            required
+          >
+            {product &&
+              product.map((ele, i) => (
+                <option key={i} value={ele.product_id} className="option">
+                  {ele.product_id}
+                </option>
+              ))}
+          </select>
+          <br />
+          <label>
+            <b>Quantity*</b>
           </label>
           <br />
           <input
-            value={movement_id}
-            onChange={(e) => {
-              setMovementId(e.target.value);
-            }}
             className="form-input"
+            value={quantity}
+            type="number"
+            onChange={(e) => setQuantity(e.target.value)}
+            min={1}
             required
           />
           <br />
@@ -156,7 +195,7 @@ function ProductMovement() {
             <b>Sr. No.</b>
           </div>
           <div>
-            <b>Movement Id</b>
+            <b>Quantity</b>
           </div>
           <div>
             <b>From Location</b>
@@ -182,25 +221,23 @@ function ProductMovement() {
                 <div>
                   <b>{i + 1}</b>
                 </div>
-                <div>{ele.movement_id}</div>
+                <div>{ele.quantity}</div>
                 <div>{ele.from_location_id}</div>
                 <div>{ele.to_location_id}</div>
                 <div style={{ display: "flex" }}>
-                  <EditIcon
+                  <DeleteForeverIcon
                     style={{ marginRight: "1vw" }}
                     className="edit-icon"
                     onClick={() => {
-                      setToLocationId(ele.to_location_id);
-                      setFromLocationId(ele.from_location_id);
-                      setMovementId(ele.movement_id);
-                      setCurrentEle(ele);
-                      setIsModalOpen(true);
+                      console.log("delete attempt", ele);
+                      currentEle = ele;
+                      deleteElement();
                     }}
                   />
                   <VisibilityIcon
                     className="view-icon"
                     onClick={() => {
-                      setCurrentEle(ele);
+                      currentEle = ele;
                       setViewMovement(true);
                     }}
                   />
@@ -210,7 +247,7 @@ function ProductMovement() {
         </div>
       </div>
 
-      {/* **************Modal to Add and Edit Movement Detail************* */}
+      {/* **************Modal to Add  Movement Detail************* */}
 
       <Modal
         isOpen={isModalOpen}
@@ -223,8 +260,9 @@ function ProductMovement() {
             setIsModalOpen(false);
             setToLocationId("");
             setFromLocationId("");
-            setMovementId("");
-            setCurrentEle("");
+            setProductId("");
+            setQuantity(1);
+            currentEle = "";
           }}
         >
           &times;
@@ -246,18 +284,18 @@ function ProductMovement() {
           className="view-modal-close"
           onClick={() => {
             setViewMovement(false);
-            setCurrentEle("");
+            currentEle = "";
           }}
         >
           &times;
         </div>
         <div className="view-modal-header"> Product Movement Detail </div>
-        <div className="view-modal-heading"> Movement Id: </div>
-        <div className="view-modal-body"> {currentEle.movement_id} </div>
         <div className="view-modal-heading"> From Location: </div>
         <div className="view-modal-body"> {currentEle.from_location_id} </div>
         <div className="view-modal-heading"> To Location: </div>
         <div className="view-modal-body"> {currentEle.to_location_id} </div>
+        <div className="view-modal-heading"> Quantity: </div>
+        <div className="view-modal-body"> {currentEle.quantity} </div>
         <div className="view-modal-heading"> time: </div>
         <div className="view-modal-body"> {currentEle.timestamp} </div>
       </Modal>
