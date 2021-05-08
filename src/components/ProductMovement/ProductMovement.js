@@ -21,6 +21,12 @@ function ProductMovement() {
 
   // ************useEffects to fetch initial datas****************
 
+  function fetchMovement() {
+    axios
+      .get("https://inqubitbackend.herokuapp.com/api/productmovements")
+      .then((res) => setProductMovement(res.data));
+  }
+
   useEffect(() => {
     axios
       .get("https://inqubitbackend.herokuapp.com/api/locations")
@@ -33,10 +39,8 @@ function ProductMovement() {
       });
   }, []);
   useEffect(() => {
-    axios
-      .get("https://inqubitbackend.herokuapp.com/api/productmovements")
-      .then((res) => setProductMovement(res.data));
-  }, [isModalOpen]);
+    fetchMovement();
+  }, []);
 
   // ***********function to handle form submition **************
 
@@ -70,6 +74,7 @@ function ProductMovement() {
         setProductId("");
         setQuantity(1);
         currentEle = "";
+        fetchMovement();
       })
       .catch((err) => {
         alert(err);
@@ -86,10 +91,11 @@ function ProductMovement() {
         `https://inqubitbackend.herokuapp.com/api/productmovements/${currentEle._id}`
       )
       .then(() => {
+        console.log("deleted");
         currentEle = "";
       })
       .catch((err) => {
-        console.log(err, "delete");
+        console.log(err, "error");
         alert(err);
       });
   };
@@ -229,7 +235,6 @@ function ProductMovement() {
                     style={{ marginRight: "1vw" }}
                     className="edit-icon"
                     onClick={() => {
-                      console.log("delete attempt", ele);
                       currentEle = ele;
                       deleteElement();
                     }}
